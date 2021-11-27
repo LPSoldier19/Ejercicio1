@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
 
     $('#txt-valor-porcentaje-natalidad').val(`${40}%`);
@@ -24,26 +26,23 @@ $(document).ready(function () {
     });
 
     function dibujarGraficoGeneral(){
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Año', 'Poblacion', 'Mortalidad','Natalidad'],
-              ['2',  1000,      400, 200],
-              ['3',  1170,      460, 250],
-              ['4',  660,       1120, 1170],
-              ['5',  1030,      540, 600]
-            ]);
-            
-            var options = {
-              title: 'Crecimiento Poblacional',
-              hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-              vAxis: {minValue: 0}
-            };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('grafico-area'));
-            chart.draw(data, options);
-        }
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(pFinal);
+        
+        var options = {
+          title: 'Crecimiento Poblacional',
+          hAxis: {title: 'Año',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('grafico-area'));
+        chart.draw(data, options);
+      }
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+          
+        
     }
 
     function dibujarGraficoNatalidad(){
@@ -126,15 +125,38 @@ $(document).ready(function () {
 
     $('#btn-simular').click(function(){
 
-        document.getElementById('card-discapacidad').classList.remove('d-none');
-        document.getElementById('card-mortalidad').classList.remove('d-none');
-        document.getElementById('card-natalidad').classList.remove('d-none');
+      var poblacion = $('#txt-poblacion').val();
+      var años = $('#txt-anios').val();
+      var porcentajeNatalidad = $('#txt-porcentaje-natalidad').val();
+      var porcentajeMortalidad = $('#txt-porcentaje-mortalidad').val();
 
-
-        dibujarGraficoGeneral();
-        dibujarGraficoNatalidad();
-        dibujarGraficoMortalidad();
-        dibujarGraficoDiscapacidad();
+        // document.getElementById('card-discapacidad').classList.remove('d-none');
+        // document.getElementById('card-mortalidad').classList.remove('d-none');
+        // document.getElementById('card-natalidad').classList.remove('d-none');
+      pFinal=[];
+      dibujarGraficoGeneral();
+        // dibujarGraficoNatalidad();
+        // dibujarGraficoMortalidad();
+        // dibujarGraficoDiscapacidad();
+      valoresEstadisticos(poblacion,años,porcentajeMortalidad,porcentajeNatalidad);
+      console.log(pFinal);
     });
 
 });
+
+var pFinal=[];
+
+function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcentajeNatalidad){
+  var poblacionAuxiliar = Number(poblacion);
+  pFinal.push(['Año','Poblacion','Mortalidad','Natalidad'])
+  for(i=1;i<=numeroAnios;i++){
+    var natalidad=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
+    var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
+    var x1=poblacionAuxiliar+(natalidad)-(mortalidad);
+    pFinal.push([String(i),x1,natalidad,mortalidad]);
+    poblacionAuxiliar=x1;
+  }
+}
+
+
+  
