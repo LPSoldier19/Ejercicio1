@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Crecimiento Poblacional</title>
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
+    <script src="JS/bootstrap.min.js"></script>
+</head>
+<body style="background-color: rgba(224, 208, 190, 0.466);">
+
+    <main>
+        <div class="container-fluid">
+            <div class="row mb-5">
+                <div class="col-4">
+                    <div class="align-self-center">
+                        <div class="card mt-5">
+                            <div class="card-header text-center">
+                                <h4><strong>Simulador de Crecimiento Poblacional</strong></h4>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="txt-poblacion">Ingrese la cantidad de habitantes:</label>
+                                        <input class="form-control" type="number" name="txt-poblacion" id="txt-poblacion" min="10000" max="80000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt-poblacion">Porcentaje de Natalidad:</label>
+                                        <input style="border: none;" class="form-control custom-range" type="range" name="txt-porcentaje-natalidad" id="txt-porcentaje-natalidad" min="10" max="70">
+                                        <input style="width: 20%;" class="form-control mt-1" type="text" id="txt-valor-porcentaje-natalidad" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt-poblacion">Porcentaje de Mortalidad:</label>
+                                        <input style="border: none;" class="form-control custom-range" type="range" name="txt-porcentaje-mortalidad" id="txt-porcentaje-mortalidad" min="2" max="60">
+                                        <input style="width: 20%;" class="form-control mt-1" type="text" id="txt-valor-porcentaje-mortalidad" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txt-poblacion">Numero de años:</label>
+                                        <input class="form-control" type="number" name="txt-anios" id="txt-anios" min="2" max="10" value="2">
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button style="width: 40%;" type="button" id="btn-limpiar" class="btn btn-outline-warning">Limpiar</button>
+                                        <button style="width: 40%;" id="btn-simular" type="button" class="btn btn-outline-success">Simular</button>
+                                        <button style="width: 40%;" id="btn-simular" type="button" class="btn btn-outline-danger mt-2">Detener</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="mt-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="grafico-area" style="height: 300px;"></div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="card text-center d-none" id="card-mortalidad">
+                                    <div id="grafico-mortalidad" class="card-body"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="card text-center d-none" id="card-natalidad">
+                                    <div id="grafico-natalidad" class="card-body"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="card text-center d-none" id="card-discapacidad">
+                                    <div class="card-body">
+                                        <div id="grafico-discapacidad"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+
+
+
+    <script src="JS/jquery-3.4.1.min.js"></script>
+    <script src="JS/popper.min.js"></script>
+    <script src="JS/controlador.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</body>
+</html>
