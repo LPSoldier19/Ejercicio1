@@ -43,7 +43,7 @@ $(document).ready(function () {
         var options = {
           title: 'Crecimiento Poblacional',
           hAxis: {title: 'Año',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
+          vAxis: {minValue: 0, format:'0'}
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('grafico-area'));
@@ -191,6 +191,7 @@ function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcenta
   pGeneroNatalidad.push(['Año', 'Hombres', 'Mujeres']);
   pGeneroMortalidad.push(['Año', 'Hombres', 'Mujeres']);
   pNatalidadesTiposDiscapacidad.push(['Año', 'Motriz','Mental','Ambas']);
+
   for(i=1;i<=numeroAnios;i++){
     var natalidad=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
     var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
@@ -201,29 +202,32 @@ function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcenta
 
   for(j=1;j<=numeroAnios;j++){
     var natalidadGeneral=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
+    var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
     var natalidadHombres=natalidadGeneral*((50.41)/100);
     var natalidadMujeres=natalidadGeneral*((49.58)/100);
-    var x1=poblacionAuxiliar+(natalidad)-(mortalidad);
+    var x1=poblacionAuxiliar+(natalidadGeneral)-(mortalidad);
     pGeneroNatalidad.push([String(j),natalidadHombres,natalidadMujeres]);
     poblacionAuxiliar=x1;
   }
 
   for(k=1;k<=numeroAnios;k++){
     var mortalidadGeneral=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
-    var mortalidadHombres=mortalidadGeneral*((50.41)/100);
-    var mortalidadMujeres=mortalidadGeneral*((49.58)/100);
-    var x1=poblacionAuxiliar+(natalidad)-(mortalidad);
+    var natalidad=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
+    var mortalidadHombres=mortalidadGeneral*((17)/100);
+    var mortalidadMujeres=mortalidadGeneral*((12)/100);
+    var x1=poblacionAuxiliar+(natalidad)-(mortalidadGeneral);
     pGeneroMortalidad.push([String(k),mortalidadHombres,mortalidadMujeres]);
     poblacionAuxiliar=x1;
   }
 
   for(m=1;m<=numeroAnios;m++){
     var natalidadGeneral2=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
+    var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
     var natalidadDiscapacidad=natalidadGeneral2*(0.05);
     var discapacidadMotrices=natalidadDiscapacidad*(0.6);
     var discapacidadMentales=natalidadDiscapacidad*(0.4);
     var discapacidadAmbas=natalidadDiscapacidad*(0.2);
-    var x1=poblacionAuxiliar+(natalidad)-(mortalidad);
+    var x1=poblacionAuxiliar+(natalidadGeneral)-(mortalidad);
     pNatalidadesTiposDiscapacidad.push([String(m),discapacidadMotrices,discapacidadMentales,discapacidadAmbas]);
     poblacionAuxiliar=x1;
   }
