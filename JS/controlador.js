@@ -188,9 +188,13 @@ var pNatalidadesTiposDiscapacidad = [];
 function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcentajeNatalidad){
   var poblacionAuxiliar = Number(poblacion);
   pFinal.push(['Año','Poblacion','Mortalidad','Natalidad']);
+  pFinal.push(['0',poblacionAuxiliar,0,0])
   pGeneroNatalidad.push(['Año', 'Hombres', 'Mujeres']);
+  pGeneroNatalidad.push(['0', 0, 0]);
   pGeneroMortalidad.push(['Año', 'Hombres', 'Mujeres']);
+  pGeneroMortalidad.push(['0', 0, 0]);
   pNatalidadesTiposDiscapacidad.push(['Año', 'Motriz','Mental','Ambas']);
+  pNatalidadesTiposDiscapacidad.push(['0', 0, 0,0]);
 
   for(i=1;i<=numeroAnios;i++){
     var natalidad=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
