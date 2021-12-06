@@ -1,14 +1,27 @@
-
-
 $(document).ready(function () {
 
     $('#txt-valor-porcentaje-natalidad').val(`${40}%`);
     $('#txt-valor-porcentaje-mortalidad').val(`${31}%`);
+    $('#valor-porcentaje-hombre').val(`${50}%`)
+    $('#valor-porcentaje-mujer').val(`${50}%`)
     $('#txt-poblacion').val(10000);
+    $('#txt-valor-porcentaje-natalidad-discapacidad').val(`${2.5}%`)
 
     $('#txt-porcentaje-natalidad').change(function() { 
         porcentajeNatalidad = $('#txt-porcentaje-natalidad').val();
         $('#txt-valor-porcentaje-natalidad').val(`${porcentajeNatalidad}%`)
+    });
+
+    $('#txt-porcentaje-natalidad-discapacidad').change(function() { 
+      porcentajeNatalidadDiscapacidad = $('#txt-porcentaje-natalidad-discapacidad').val();
+      $('#txt-valor-porcentaje-natalidad-discapacidad').val(`${porcentajeNatalidadDiscapacidad}%`)
+  });
+
+    $('#txt-porcentaje-natalidad-genero').change(function() { 
+      var porcentajeNatalidadHombre = $('#txt-porcentaje-natalidad-genero').val();
+      var porcentajeNatalidadMujer = 100-Number(porcentajeNatalidadHombre);
+      $('#valor-porcentaje-hombre').val(`${porcentajeNatalidadHombre}%`);
+      $('#valor-porcentaje-mujer').val(`${porcentajeNatalidadMujer}%`);
     });
 
     $('#txt-porcentaje-mortalidad').change(function() { 
@@ -19,8 +32,14 @@ $(document).ready(function () {
     $('#btn-limpiar').click(function(){ 
         $('#txt-porcentaje-natalidad').val(40);
         $('#txt-porcentaje-mortalidad').val(31);
+        $('#txt-porcentaje-natalidad-genero').val(50);
+        $('#txt-porcentaje-natalidad-discapacidad').val(2.5);
+        
         $('#txt-valor-porcentaje-natalidad').val($('#txt-porcentaje-natalidad').val()+"%");
+        $('#valor-porcentaje-hombre').val($('#txt-porcentaje-natalidad-genero').val()+"%");
+        $('#valor-porcentaje-mujer').val((100-$('#txt-porcentaje-natalidad-genero').val())+"%");
         $('#txt-valor-porcentaje-mortalidad').val( $('#txt-porcentaje-mortalidad').val()+"%");
+        $('#txt-valor-porcentaje-natalidad-discapacidad').val($('#txt-porcentaje-natalidad-discapacidad').val()+"%");
         $('#txt-poblacion').val(10000);
         $('#txt-anios').val(2);
 
@@ -121,6 +140,9 @@ $(document).ready(function () {
       var años = $('#txt-anios').val();
       var porcentajeNatalidad = $('#txt-porcentaje-natalidad').val();
       var porcentajeMortalidad = $('#txt-porcentaje-mortalidad').val();
+      var porcentajeNatalidadHombre = Number($('#txt-porcentaje-natalidad-genero').val());
+      var porcentajeNatalidadMujer = 100 - porcentajeNatalidadHombre;
+      var porcentajeNatalidadDiscapacidad = $('#txt-porcentaje-natalidad-discapacidad').val();
 
       if(años>1){
         if(poblacion>=10000){
@@ -136,7 +158,7 @@ $(document).ready(function () {
           dibujarGraficoNatalidad();
           dibujarGraficoMortalidad();
           dibujarGraficoDiscapacidad();
-          valoresEstadisticos(poblacion,años,porcentajeMortalidad,porcentajeNatalidad);
+          valoresEstadisticos(poblacion,años,porcentajeMortalidad,porcentajeNatalidad, porcentajeNatalidadHombre, porcentajeNatalidadMujer, porcentajeNatalidadDiscapacidad);
         }
         else{
           alert('Los datos ingresados no son validos');
@@ -185,7 +207,7 @@ var pGeneroMortalidad=[];
 
 var pNatalidadesTiposDiscapacidad = [];
 
-function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcentajeNatalidad){
+function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcentajeNatalidad, porcentajeNatalidadHombre, porcentajeNatalidadMujer, porcentajeNatalidadDiscapacidad){
   var poblacionAuxiliar = Number(poblacion);
   pFinal.push(['Año','Poblacion','Mortalidad','Natalidad']);
   pFinal.push(['0',poblacionAuxiliar,0,0])
@@ -200,17 +222,17 @@ function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcenta
     var natalidad=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
     var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
     var x1=poblacionAuxiliar+(natalidad)-(mortalidad);
-    pFinal.push([String(i),x1,natalidad,mortalidad]);
+    pFinal.push([String(i),Math.round(x1),Math.round(natalidad),Math.round(mortalidad)]);
     poblacionAuxiliar=x1;
   }
 
   for(j=1;j<=numeroAnios;j++){
     var natalidadGeneral=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
     var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
-    var natalidadHombres=natalidadGeneral*((50.41)/100);
-    var natalidadMujeres=natalidadGeneral*((49.58)/100);
+    var natalidadHombres=natalidadGeneral*(porcentajeNatalidadHombre/100);
+    var natalidadMujeres=natalidadGeneral*(porcentajeNatalidadMujer/100);
     var x1=poblacionAuxiliar+(natalidadGeneral)-(mortalidad);
-    pGeneroNatalidad.push([String(j),natalidadHombres,natalidadMujeres]);
+    pGeneroNatalidad.push([String(j),Math.round(natalidadHombres),Math.round(natalidadMujeres)]);
     poblacionAuxiliar=x1;
   }
 
@@ -220,19 +242,19 @@ function valoresEstadisticos(poblacion,numeroAnios,porcentajeMortalidad,porcenta
     var mortalidadHombres=mortalidadGeneral*((17)/100);
     var mortalidadMujeres=mortalidadGeneral*((12)/100);
     var x1=poblacionAuxiliar+(natalidad)-(mortalidadGeneral);
-    pGeneroMortalidad.push([String(k),mortalidadHombres,mortalidadMujeres]);
+    pGeneroMortalidad.push([String(k),Math.round(mortalidadHombres),Math.round(mortalidadMujeres)]);
     poblacionAuxiliar=x1;
   }
 
   for(m=1;m<=numeroAnios;m++){
     var natalidadGeneral2=poblacionAuxiliar*(Number(porcentajeNatalidad)/100);
     var mortalidad=poblacionAuxiliar*(Number(porcentajeMortalidad)/100);
-    var natalidadDiscapacidad=natalidadGeneral2*(0.05);
+    var natalidadDiscapacidad=natalidadGeneral2*(porcentajeNatalidadDiscapacidad);
     var discapacidadMotrices=natalidadDiscapacidad*(0.6);
     var discapacidadMentales=natalidadDiscapacidad*(0.4);
     var discapacidadAmbas=natalidadDiscapacidad*(0.2);
     var x1=poblacionAuxiliar+(natalidadGeneral)-(mortalidad);
-    pNatalidadesTiposDiscapacidad.push([String(m),discapacidadMotrices,discapacidadMentales,discapacidadAmbas]);
+    pNatalidadesTiposDiscapacidad.push([String(m),Math.round(discapacidadMotrices),Math.round(discapacidadMentales),Math.round(discapacidadAmbas)]);
     poblacionAuxiliar=x1;
   }
 
